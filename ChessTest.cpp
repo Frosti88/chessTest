@@ -1,7 +1,9 @@
 #include <iostream>
 
+#include "chess.h"
 
 int main() {
-	std::cout << "It Works!" << std::endl;
+	chess game;
+	game.play();
 	return 0;
 }

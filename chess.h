@@ -1,15 +1,32 @@
 #pragma once
 #include <stdint.h>
+
+#include <iostream>
+#include <bitset>
+
+struct piece {
+	std::string id = "";
+	int x = 0;
+	int y = 0;
+};
 class chess
 {
 public:
 	chess();
 
+	bool play();
+
+	void print();
+
+	uint8_t get_pos(uint16_t piece);
+	uint8_t getPiece(uint16_t piece);
+	bool isCaptured(uint16_t piece);
+
 	~chess();
 private:
 	//one piece per entry
 	//0000  0000  0000  0000
-	//piece x     y     empty
+	//piece x     y     captured
 	//0001 = white pawn
 	//0010 = white bishop
 	//0011 = white knight
@@ -23,7 +40,7 @@ private:
 	//1101 = black queen
 	//1110 = black king
 	uint16_t board[32] = { //white pawns
-						   0b0001000100100000,
+						   0b0001000100100000,//mark as not captured when done testing!
 						   0b0001001000100000,
 						   0b0001001100100000,
 						   0b0001010000100000,
