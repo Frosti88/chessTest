@@ -6,8 +6,7 @@
 
 struct piece {
 	std::string id = "";
-	int x = 0;
-	int y = 0;
+	uint8_t pos = 0;
 };
 class chess
 {
@@ -21,6 +20,8 @@ public:
 	uint8_t get_pos(uint16_t piece);
 	uint8_t getPiece(uint16_t piece);
 	bool isCaptured(uint16_t piece);
+
+	std::string getID(uint16_t piece);
 
 	~chess();
 private:
@@ -40,7 +41,7 @@ private:
 	//1101 = black queen
 	//1110 = black king
 	uint16_t board[32] = { //white pawns
-						   0b0001000100100000,//mark as not captured when done testing!
+						   0b0001000100100000,
 						   0b0001001000100000,
 						   0b0001001100100000,
 						   0b0001010000100000,
