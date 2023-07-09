@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-
+#include <algorithm>
 #include <iostream>
 #include <bitset>
 
@@ -22,6 +22,8 @@ public:
 	bool isCaptured(uint16_t piece);
 
 	std::string getID(uint16_t piece);
+
+	void parsePGN(std::string PGN);
 
 	~chess();
 private:
