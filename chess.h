@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <iostream>
 #include <bitset>
+#include <string>
+#include <vector>
+#include <sstream>
 
 struct piece {
 	std::string id = "";

@@ -131,45 +131,65 @@ bool chess::isCaptured(uint16_t piece) {
 }
 
 void chess::parsePGN(std::string PGN) {
-	bool recordMove = false;
-	std::string Move = "";
-	for (char c : PGN) {
-		if (c == '.') {
-			if (!recordMove) {
-				Move = "";
-				recordMove = true;
-			}
-			else {
-				recordMove = false;
-				reverse(Move.begin(), Move.end());
-				std::string mv = "";
-				bool recordNew = false;
-				bool wait = false;
-				for (char ch : Move) {
-					if (ch == '}') {
-						wait = true;
-					}
-					if (ch == '{') {
-						wait = __cpp_lib_experimental_erase_if;
-					}
-					if (!wait) {
-						if (ch == ' ') {
-							recordNew = true;
-						}
-						if (recordNew) {
-							mv += ch;
-						}
-					}
-				}
-				reverse(mv.begin(), mv.end());
-				std::cout << mv << std::endl;
-			}
-		}
-		if (recordMove) {
-			Move += c;
-		}
-		else {
+std::stringstream SPGN(PGN);
+	/*std::string segment;
+	std::vector<std::string> seglist;
+	std::vector<std::string> moveList;
 
+	PGN.erase(std::remove(PGN.begin(), PGN.end(), '\n'), PGN.end());
+
+	while (std::getline(SPGN, segment, ' '))
+	{
+		seglist.push_back(segment);
+	}
+
+	std::string mv = "";
+	bool record = false;
+	for (std::string moveLine : seglist) {
+		if (moveLine.find('.') != std::string::npos) {
+			moveList.push_back(mv);
+			mv = "";
+			record = false;
+		}
+		mv += moveLine;
+	}
+	for (std::string move : moveList) {
+		std::cout << move << std::endl;
+	}*/
+	// Split the PGN into individual moves
+	std::vector<std::string> moves;
+	size_t startPos = 0;
+	size_t endPos = PGN.find(' ');
+
+	while (endPos != std::string::npos) {
+		std::string move = PGN.substr(startPos, endPos - startPos);
+		moves.push_back(move);
+
+		startPos = endPos + 1;
+		endPos = PGN.find(' ', startPos);
+	}
+
+	// Output each move on a new line
+	for (size_t i = 0; i < moves.size(); i++) {
+		std::string move = moves[i];
+
+		// Remove any comments within curly braces
+		size_t commentPos = move.find('{');
+		if (commentPos != std::string::npos) {
+			move = move.substr(0, commentPos);
+		}
+
+		// Remove any annotations (e.g., +, #)
+		size_t annotationPos = move.find_first_of("+#");
+		if (annotationPos != std::string::npos) {
+			move = move.substr(0, annotationPos);
+		}
+
+		// Remove any extraneous spaces
+		move.erase(std::remove(move.begin(), move.end(), ' '), move.end());
+
+		if (!move.empty()) {
+			std::cout << move << std::endl;
 		}
 	}
 }
