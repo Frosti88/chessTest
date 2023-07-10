@@ -26,8 +26,6 @@ public:
 
 	std::string getID(uint16_t piece);
 
-	void parsePGN(std::string PGN);
-
 	~chess();
 private:
 	//one piece per entry
