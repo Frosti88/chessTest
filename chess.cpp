@@ -5,7 +5,38 @@ chess::chess() {
 }
 
 bool chess::play() {
-	this->print();
+	while (true) {
+		std::string com;
+		int x = 0;
+		int y = 0;
+		int nx = 0;
+		int ny = 0;
+		std::cout << "Enter nothing to keep modifying or done to end modifying" << std::endl;
+		std::getline(std::cin, com);
+		if (com == "done") {
+			break;
+		}
+		com = "";
+		std::cout << "Enter coords for moving" << std::endl;
+		while (x < 1 or x > 8) {
+			std::cout << "X: ";
+			std::cin >> x;
+		}
+		while (y < 1 or y > 8) {
+			std::cout << "Y: ";
+			std::cin >> y;
+		}
+		while (nx < 1 or nx > 8) {
+			std::cout << "nX: ";
+			std::cin >> nx;
+		}
+		while (ny < 1 or ny > 8) {
+			std::cout << "nY: ";
+			std::cin >> ny;
+		}
+		this->move(x, y, nx, ny);
+		this->print();
+	}
 	return false;
 }
 
@@ -120,7 +151,36 @@ uint8_t chess::get_pos(uint16_t piece) {
 bool chess::isCaptured(uint16_t piece) {
 	uint16_t captured = (piece << 12);
 	bool iscap = captured >> 15;
-	return piece;
+	return iscap;
+}
+
+void chess::setPos(int idx, uint8_t pos)
+{
+	uint16_t piece = this->board[idx];
+	uint16_t mask = 0xF00F;
+	piece &= mask;
+	uint16_t replacement = (pos << 4) & ~mask;
+	uint16_t newPiece = piece | replacement;
+	this->board[idx] = newPiece;
+}
+
+void chess::setCap(int idx)
+{
+	this->board[idx] = this->board[idx] | 0000000000001111;
+}
+
+void chess::move(int x, int y, int newX, int newY)
+{
+	uint8_t newPos = (newX << 4) | newY;
+	uint8_t oldPos = (x << 4) | y;
+	for (int idx = 0; idx < 32; idx++) {
+		if (this->get_pos(this->board[idx]) == newPos) {
+			this->setCap(idx);
+		}
+		if (this->get_pos(this->board[idx]) == oldPos) {
+			this->setPos(idx, newPos);
+		}
+	}
 }
 
 chess::~chess() {

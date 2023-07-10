@@ -24,6 +24,11 @@ public:
 	uint8_t getPiece(uint16_t piece);
 	bool isCaptured(uint16_t piece);
 
+	void setPos(int idx, uint8_t pos);
+	void setCap(int idx);
+
+	void move(int x, int y, int newX, int newY);
+
 	std::string getID(uint16_t piece);
 
 	~chess();
